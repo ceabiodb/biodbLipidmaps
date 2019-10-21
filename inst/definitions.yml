@@ -1,0 +1,40 @@
+# vi: fdm=marker
+
+databases:
+
+  lipidmaps.structure:
+    entry.content.type: csv
+    name: LIPID MAPS Structure
+    parsing.expr:
+      accession: LM_ID
+      chebi.id: CHEBI_ID
+      hmdb.metabolites.id: HMDBID
+      kegg.compound.id: KEGG_ID
+      ncbi.pubchem.comp.id: PUBCHEM_COMPOUND_ID
+      comp.iupac.name.syst: SYSTEMATIC_NAME
+      exact.mass: MASS
+      formula: FORMULA
+      name: COMMON_NAME
+    scheduler.n: 1
+    scheduler.t: 20
+    searchable.fields:
+        - name
+        - monoisotopic.mass
+    urls:
+      base.url: http://www.lipidmaps.org/data/
+
+fields:
+
+  lipidmaps.structure.id:
+    description: LIPID MAPS Structure ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
+
+  ncbi.pubchem.comp.id:
+    description: PubChem Compound ID
+    case.insensitive: true
+    forbids.duplicates: true
+    type: id
+    card: many
