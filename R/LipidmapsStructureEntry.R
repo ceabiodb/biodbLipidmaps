@@ -23,7 +23,6 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @include BiodbCsvEntry.R
 #' @export LipidmapsStructureEntry
 #' @exportClass LipidmapsStructureEntry
 LipidmapsStructureEntry <- methods::setRefClass("LipidmapsStructureEntry",

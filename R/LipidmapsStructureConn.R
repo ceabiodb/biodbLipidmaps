@@ -28,8 +28,6 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @include BiodbCompounddbConn.R
-#' @include BiodbRemotedbConn.R
 #' @export LipidmapsStructureConn
 #' @exportClass LipidmapsStructureConn
 LipidmapsStructureConn <- methods::setRefClass("LipidmapsStructureConn",
