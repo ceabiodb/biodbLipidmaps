@@ -15,6 +15,7 @@ Meta
 src-i386
 src-x64
 src/*.rds
+tests/testthat/output
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
