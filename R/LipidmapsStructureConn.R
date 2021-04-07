@@ -1,19 +1,10 @@
-# vi: fdm=marker ts=4 et cc=80 tw=80
-
-# LipidmapsStructureConn {{{1
-################################################################################
-
-# Declaration {{{2
-################################################################################
-
 #' Lipidmaps Structure connector class.
 #'
-#' This is a concrete connector class. It must never be instantiated directly,
-#' but instead be instantiated through the factory \code{\link{BiodbFactory}}.
-#' Only specific methods are described here. See super classes for the
-#' description of inherited methods.
+#' Connector class for Lipidmaps Structure.
 #'
-#' @seealso \code{\link{BiodbFactory}}.
+#' @seealso 
+#' \code{\link{BiodbCompounddbConn}}
+#' \code{\link{BiodbRemotedbConn}}
 #'
 #' @examples
 #' # Create an instance with default settings:

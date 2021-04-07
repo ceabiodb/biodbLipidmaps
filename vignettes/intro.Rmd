@@ -1,0 +1,86 @@
+---
+title: "An introduction to biodbLipidmaps"
+author: "Pierrick Roger"
+date: "`r BiocStyle::doc_date()`"
+package: "`r BiocStyle::pkg_ver('biodbLipidmaps')`"
+vignette: |
+  %\VignetteIndexEntry{Introduction to the biodbLipidmaps package.}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  BiocStyle::html_document:
+    toc: yes
+    toc_depth: 4
+    toc_float:
+      collapsed: false
+  BiocStyle::pdf_document: default
+---
+
+# Purpose
+
+biodbLipidmaps is a *biodb* extension package that implements a connector to
+Lipidmaps Structure.
+
+# Initialization
+
+The first step in using *biodbLipidmaps*, is to create an instance of the biodb
+class `Biodb` from the main *biodb* package. This is done by calling the
+constructor of the class:
+```{r, results='hide'}
+mybiodb <- biodb::Biodb()
+```
+During this step the configuration is set up, the cache system is initialized
+and extension packages are loaded.
+
+We will see at the end of this vignette that the *biodb* instance needs to be
+terminated with a call to the `terminate()` method.
+
+# Creating a connector to Lipidmaps Structure
+
+In *biodb* the connection to a database is handled by a connector instance that
+you can get from the factory.
+biodbLipidmaps implements a connector to a remote database.
+Here is the code to instantiate a connector:
+```{r}
+conn <- mybiodb$getFactory()$createConn('lipidmaps.structure')
+```
+
+# Accessing entries
+
+To get the number of entries stored inside the database, run:
+```{r}
+conn$getNbEntries()
+```
+
+To get some of the first entry IDs (accession numbers) from the database, run:
+```{r}
+ids <- conn$getEntryIds(2)
+ids
+```
+
+To retrieve entries, use:
+```{r}
+entries <- conn$getEntry(ids)
+entries
+```
+
+To convert a list of entries into a dataframe, run:
+```{r}
+x <- mybiodb$entriesToDataframe(entries)
+x
+```
+
+# Running the "find" web service
+
+You can access the web service "find" directly with the *wsFind* method:
+```{r}
+conn$wsFind(name="abc", retfmt="ids")
+```
+
+# Closing biodb instance
+
+When done with your *biodb* instance you have to terminate it, in order to
+ensure release of resources (file handles, database connection, etc):
+```{r}
+mybiodb$terminate()
+```

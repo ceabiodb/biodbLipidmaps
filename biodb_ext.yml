@@ -1,0 +1,18 @@
+pkgName: biodbLipidmaps
+email: pierrick.roger@cea.fr
+dbName: lipidmaps.structure
+dbTitle: Lipidmaps Structure
+pkgLicense: AGPL-3
+firstname: Pierrick
+lastname: Roger
+newPkg: yes
+connType: compound
+entryType: csv
+editable: no
+writable: no
+remote: yes
+downloadable: no
+makefile: yes
+rcpp: no
+vignetteName: intro
+githubRepos: pkrog/biodbLipidmaps
