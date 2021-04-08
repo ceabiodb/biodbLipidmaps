@@ -24,13 +24,7 @@
 LipidmapsStructureConn <- methods::setRefClass("LipidmapsStructureConn",
     contains=c("BiodbRemotedbConn", "BiodbCompounddbConn"),
 
-# Public methods {{{2
-################################################################################
-
 methods=list(
-
-# Get entry page url {{{3
-################################################################################
 
 getEntryPageUrl=function(id) {
     # Overrides super class' method.
@@ -40,18 +34,16 @@ getEntryPageUrl=function(id) {
     return(vapply(id, fct, FUN.VALUE=''))
 },
 
-# Web service LMSDSearch {{{3
-################################################################################
-
 wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
                       output.delimiter=NULL, output.quote=NULL,
                       output.column.header=NULL, lmid=NULL, name=NULL,
                       formula=NULL, search.type=NULL, smiles.string=NULL,
-                      exact.mass=NA_real_, exact.mass.offset=NA_real_,
+                      exact.mass=NULL, exact.mass.offset=NULL,
                       core.class=NULL, main.class=NULL, sub.class=NULL,
                       retfmt=c('plain', 'request', 'parsed', 'ids')) {
     ":\n\nCalls LMSDSearch web service. See
-    http://www.lipidmaps.org/data/structure/programmaticaccess.html for details.
+    https://www.lipidmaps.org/data/structure/programmaticaccess.html for
+    details.
     \nmode: The search mode: 'ProcessStrSearch', 'ProcessTextSearch' or
     'ProcessTextOntologySearch'.
     \noutput.mode: If set to 'File', will output a in format `output.type`,
@@ -181,9 +173,6 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
     return(results)
 },
 
-# Web service LMSDRecord {{{3
-################################################################################
-
 wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
                       output.quote=NULL, output.column.header=NULL,
                       retfmt=c('plain', 'request', 'parsed')) {
@@ -270,42 +259,30 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     return(results)
 },
 
+.doSearchForEntries=function(fields=NULL, max.results=NA_integer_) {
 
-# Search compound {{{3
-################################################################################
+    ids <- character()
 
-searchCompound=function(name=NULL, mass=NULL, mass.field=NULL, mass.tol=0.01,
-                        mass.tol.unit='plain', max.results=NA_integer_) {
-    # Overrides super class' method.
-
-    .self$.checkMassField(mass=mass, mass.field=mass.field)
-
-    exact.mass <- NULL
-    exact.mass.offset <- NULL
-
-    # Mass search
-    if ( ! is.null(mass) && ! is.null(mass.field)) {
-
-        mass.field <- .self$getBiodb()$getEntryFields()$getRealName(mass.field)
-
-        if (mass.field != 'monoisotopic.mass')
-            .self$caution('Mass field "', mass.field, '" is not handled.')
-        else {
-            exact.mass <- mass
-            if (mass.tol.unit == 'ppm')
-                exact.mass.offset <- mass * mass.tol * 1e-6
-            else
-                exact.mass.offset <- mass.tol
+    if ( ! is.null(fields)) {
+        
+        # Configure mass search
+        exact.mass <- NULL
+        exact.mass.offset <- NULL
+        if ('monoisotopic.mass' %in% names(fields)) {
+            rng <- do.call(Range$new, fields[['monoisotopic.mass']])
+            exact.mass <- rng$getValue()
+            exact.mass.offset <- rng$getDelta()
         }
+
+        # Configure name search
+        name <- fields$name
+
+        # Search
+        ids <- .self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
+                                  name=name, exact.mass=exact.mass,
+                                  exact.mass.offset=exact.mass.offset,
+                                  retfmt='ids')
     }
-
-    # Search
-    ids <- .self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
-                              name=name, exact.mass=exact.mass,
-                              exact.mass.offset=exact.mass.offset, retfmt='ids')
-
-    if (is.null(ids))
-        ids <- character(0)
 
     # Cut
     if ( ! is.na(max.results) && max.results > 0 && max.results < length(ids))
@@ -314,21 +291,12 @@ searchCompound=function(name=NULL, mass=NULL, mass.field=NULL, mass.tol=0.01,
     return(ids)
 },
 
-# Private methods {{{2
-################################################################################
-
-# Get entry content request {{{3
-################################################################################
-
 .doGetEntryContentRequest=function(ids, concatenate=TRUE) {
     fct <- function(id) .self$wsLmsdRecord(lmid=id, mode='File',
                                            output.type='CSV',
                                            retfmt='request')$getUrl()$toString()
     return(vapply(ids, fct, FUN.VALUE=''))
 },
-
-# Get entry ids {{{3
-################################################################################
 
 .doGetEntryIds=function(max.results=NA_integer_) {
 
