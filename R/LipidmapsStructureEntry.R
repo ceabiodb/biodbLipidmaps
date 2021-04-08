@@ -15,6 +15,8 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
+#' @import biodb
+#' @import methods
 #' @export LipidmapsStructureEntry
 #' @exportClass LipidmapsStructureEntry
 LipidmapsStructureEntry <- methods::setRefClass("LipidmapsStructureEntry",

@@ -2,10 +2,6 @@
 #'
 #' Connector class for Lipidmaps Structure.
 #'
-#' @seealso 
-#' \code{\link{BiodbCompounddbConn}}
-#' \code{\link{BiodbRemotedbConn}}
-#'
 #' @examples
 #' # Create an instance with default settings:
 #' mybiodb <- biodb::Biodb()
@@ -19,6 +15,8 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
+#' @import biodb
+#' @import methods
 #' @export LipidmapsStructureConn
 #' @exportClass LipidmapsStructureConn
 LipidmapsStructureConn <- methods::setRefClass("LipidmapsStructureConn",
@@ -45,7 +43,7 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
     https://www.lipidmaps.org/data/structure/programmaticaccess.html for
     details.
     \nmode: The search mode: 'ProcessStrSearch', 'ProcessTextSearch' or
-    'ProcessTextOntologySearch'.
+    'ProcessTextOntologySearch'. Compulsory.
     \noutput.mode: If set to 'File', will output a in format `output.type`,
     otherwise will output HTML.
     \noutput.type: The output format: 'TSV', 'CSV' or 'SDF'.

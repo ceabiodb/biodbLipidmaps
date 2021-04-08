@@ -70,11 +70,28 @@ x <- mybiodb$entriesToDataframe(entries)
 x
 ```
 
-# Running the "find" web service
+# Running the "LMSDSearch" web service
 
-You can access the web service "find" directly with the *wsFind* method:
+You can access the web service "LMSDSearch" directly with the *wsLmsdSearch*
+method:
 ```{r}
-conn$wsFind(name="abc", retfmt="ids")
+ids <- conn$wsLmsdSearch(mode='ProcessStrSearch', name="fatty", retfmt="ids")
+ids
+```
+
+From this list of identifiers, we can obtain the full entry objects:
+```{r}
+entries <- conn$getEntry(ids)
+```
+
+And then a data frame:
+```{r}
+entriesDf <- mybiodb$entriesToDataframe(entries)
+```
+That you can see in table \@ref(tab:entriesTable).
+
+```{r entriesTable, echo=FALSE, results='asis'}
+knitr::kable(entriesDf, "pipe", caption="The entries listed in the result of the search.")
 ```
 
 # Closing biodb instance

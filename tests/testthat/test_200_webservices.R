@@ -1,4 +1,17 @@
-test.lipidmaps.structure.wsLmsdRecord <- function(conn) {
+test_wsLmsdRecord_searchByName <- function(conn) {
+    
+	ids <- conn$wsLmsdSearch(mode='ProcessStrSearch', name='anhydride',
+                             retfmt='ids')
+    testthat::expect_vector(ids, character())
+    testthat::expect_true(length(ids) >= 1)
+    
+	ids <- conn$wsLmsdSearch(mode='ProcessStrSearch', name='fatty',
+                             retfmt='ids')
+    testthat::expect_vector(ids, character())
+    testthat::expect_true(length(ids) >= 5)
+}
+
+test_wsLmsdRecord <- function(conn) {
 
 	results <- conn$wsLmsdRecord(lmid='LMFA08040013')
 	expect_is(results, 'character')
@@ -16,7 +29,7 @@ test.lipidmaps.structure.wsLmsdRecord <- function(conn) {
 	expect_equal(nrow(results), 1)
 }
 
-test.lipidmaps.structure.wsLmsdSearch <- function(conn) {
+test_wsLmsdSearch <- function(conn) {
 
 	results <- conn$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
                                lmid='LMSL02000001')
@@ -60,10 +73,12 @@ biodb$loadDefinitions(defFile)
 # Create connector
 conn <- biodb$getFactory()$createConn('lipidmaps.structure')
 
+biodb::testThat("wsLmsdRecord() can search by name.",
+                test_wsLmsdRecord_searchByName, conn = conn)
 biodb::testThat("Test web service wsLmsdRecord.",
-                test.lipidmaps.structure.wsLmsdRecord, conn = conn)
+                test_wsLmsdRecord, conn = conn)
 biodb::testThat("Test web service wsLmsdSearch.",
-                test.lipidmaps.structure.wsLmsdSearch, conn = conn)
+                test_wsLmsdSearch, conn = conn)
 
 # Terminate Biodb
 biodb$terminate()
