@@ -21,7 +21,7 @@ databases:
         - name
         - monoisotopic.mass
     urls:
-      base.url: http://www.lipidmaps.org/data/
+      base.url: https://www.lipidmaps.org/data/
 
 fields:
 
