@@ -257,7 +257,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     return(results)
 },
 
-.doSearchForEntries=function(fields=NULL, max.results=NA_integer_) {
+.doSearchForEntries=function(fields=NULL, max.results=0) {
 
     ids <- character()
 
@@ -283,7 +283,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     }
 
     # Cut
-    if ( ! is.na(max.results) && max.results > 0 && max.results < length(ids))
+    if (max.results > 0 && max.results < length(ids))
         ids <- ids[seq_len(max.results)]
 
     return(ids)
