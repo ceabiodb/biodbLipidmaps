@@ -63,8 +63,7 @@ test_wsLmsdSearch <- function(conn) {
 biodb::testContext("Web services tests")
 
 # Instantiate Biodb
-biodb <- biodb::createBiodbTestInstance(log='test_200_webservices.log',
-                                        ack=TRUE)
+biodb <- biodb::createBiodbTestInstance(ack=TRUE)
 
 # Load package definitions
 defFile <- system.file("definitions.yml", package='biodbLipidmaps')

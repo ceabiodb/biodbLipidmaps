@@ -81,24 +81,24 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
     if ( ! is.null(mode) &&
         ! mode %in% c('ProcessStrSearch', 'ProcessTextSearch',
                       'ProcessTextOntologySearch'))
-        .self$error('Unknown value "', output.mode,
+        biodb::error0('Unknown value "', output.mode,
                     '" for output.mode parameter.')
     if ( ! is.null(output.mode) && ! output.mode %in% c('File'))
-        .self$error('Unknown value "', output.mode,
+        biodb::error0('Unknown value "', output.mode,
                     '" for output.mode parameter.')
     if ( ! is.null(output.type) && ! output.type %in% c('TSV', 'CSV', 'SDF'))
-        .self$error('Unknown value "', output.type,
+        biodb::error0('Unknown value "', output.type,
                     '" for output.type parameter.')
     if ( ! is.null(output.delimiter)
         && ! output.delimiter %in% c('Tab', 'Comma', 'Semicolon'))
-        .self$error('Unknown value "', output.delimiter,
+        biodb::error0('Unknown value "', output.delimiter,
                     '" for output.delimiter parameter.')
     if ( ! is.null(output.quote) && ! output.quote %in% c('Yes', 'No'))
-        .self$error('Unknown value "', output.quote,
+        biodb::error0('Unknown value "', output.quote,
                     '" for output.quote parameter.')
     if ( ! is.null(output.column.header)
         && ! output.column.header %in% c('Yes', 'No'))
-        .self$error('Unknown value "', output.column.header,
+        biodb::error0('Unknown value "', output.column.header,
                     '" for output.column.header parameter.')
 
     # Build request
@@ -161,7 +161,7 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
                                   quote=quote, fill=TRUE)
         }
         else
-            .self$error('Only TSV and CSV output types are parsable.')
+            biodb::error('Only TSV and CSV output types are parsable.')
 
         # Extract IDs
         if (retfmt == 'ids')
@@ -195,21 +195,21 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
 
     # Check parameters
     if ( ! is.null(mode) && ! mode %in% c('File', 'Download'))
-        .self$error('Unknown value "', mode, '" for mode parameter.')
+        biodb::error('Unknown value "%s" for mode parameter.', mode)
     if ( ! is.null(output.type)
         && ! output.type %in% c('TSV', 'CSV', 'SDF', 'MDLMOL'))
-        .self$error('Unknown value "', output.type,
+        biodb::error0('Unknown value "', output.type,
                     '" for output.type parameter.')
     if ( ! is.null(output.delimiter)
         && ! output.delimiter %in% c('Tab', 'Comma', 'Semicolon'))
-        .self$error('Unknown value "', output.delimiter,
+        biodb::error0('Unknown value "', output.delimiter,
                     '" for output.delimiter parameter.')
     if ( ! is.null(output.quote) && ! output.quote %in% c('Yes', 'No'))
-        .self$error('Unknown value "', output.quote,
+        biodb::error0('Unknown value "', output.quote,
                     '" for output.quote parameter.')
     if ( ! is.null(output.column.header)
         && ! output.column.header %in% c('Yes', 'No'))
-        .self$error('Unknown value "', output.column.header,
+        biodb::error0('Unknown value "', output.column.header,
                     '" for output.column.header parameter.')
 
     # Build request
@@ -251,7 +251,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
                                   quote=quote, fill=TRUE)
         }
         else
-            .self$error('Only TSV and CSV output types are parsable.')
+            biodb::error('Only TSV and CSV output types are parsable.')
     }
 
     return(results)
