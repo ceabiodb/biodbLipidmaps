@@ -28,7 +28,7 @@ getEntryPageUrl=function(id) {
     # Overrides super class' method.
 
     u <- .self$getPropValSlot('urls', 'base.url')
-    fct <- function(x) BiodbUrl(url=u, params=list(LMID=x))$toString()
+    fct <- function(x) BiodbUrl$new(url=u, params=list(LMID=x))$toString()
     return(vapply(id, fct, FUN.VALUE=''))
 },
 
@@ -133,7 +133,7 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
         params <- c(params, MainClass=main.class)
     if ( ! is.null(sub.class))
         params <- c(params, SubClass=sub.class)
-    u <- BiodbUrl(url=c(.self$getPropValSlot('urls', 'base.url'),
+    u <- BiodbUrl$new(url=c(.self$getPropValSlot('urls', 'base.url'),
                         'structure', 'LMSDSearch.php'), params=params)
     request <- .self$makeRequest(method='get', url=u)
     if (retfmt == 'request')
@@ -225,7 +225,8 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
         params <- c(params, OutputQuote=output.quote)
     if ( ! is.null(output.column.header))
         params <- c(params, OutputColumnHeader=output.column.header)
-    request <- .self$makeRequest(method='get', url=BiodbUrl(url=url, params=params))
+    request <- .self$makeRequest(method='get',
+                                 url=BiodbUrl$new(url=url, params=params))
     if (retfmt == 'request')
         return(request)
 
