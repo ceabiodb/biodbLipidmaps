@@ -1,4 +1,4 @@
-# Makefile for biodb extensions packages, version 1.1.1
+# Makefile for biodb extensions packages, version 1.1.2
 # vi: ft=make
 
 NEWPKG=true
@@ -113,10 +113,6 @@ endif
 # Code coverage
 coverage:
 	$(R) $(RFLAGS) -e "covr::codecov(token='$(value CODECOV_$(PKG_NAME_CAPS)_TOKEN)', quiet=FALSE)"
-
-# Plain check
-check: $(ZIPPED_PKG)
-	$(R) $(RFLAGS) CMD check $<
 
 # Plain check
 check: clean.vignettes $(CHECK_RENVIRON) $(ZIPPED_PKG)
