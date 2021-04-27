@@ -1,8 +1,8 @@
 Package: biodbLipidmaps
-Title: biodbLipidmaps, a library for connecting to the Lipidmaps Structure database.
+Title: biodbLipidmaps, a library for connecting to the Lipidmaps Structure database
 Version: 0.99.0
 Authors@R: c(person("Pierrick", "Roger", email = "pierrick.roger@cea.fr", role = c("aut", "cre")))
-Description: The biodbLipidmaps library provides access to the Lipidmaps Structure Database, using biodb package framework.
+Description: The biodbLipidmaps library provides access to the Lipidmaps Structure Database, using biodb package framework. It allows to retrieve entries by their accession number, and run web the services lmsdSearch and lmsdRecord.
 biocViews: Software, Infrastructure, DataImport
 License: AGPL-3
 Encoding: UTF-8
@@ -15,6 +15,7 @@ Imports:
 	methods
 Suggests:
 	BiocStyle,
+	lgr,
 	roxygen2,
 	devtools,
 	testthat (>= 2.0.0),
