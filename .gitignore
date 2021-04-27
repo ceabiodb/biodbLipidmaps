@@ -9,6 +9,7 @@ biodbLipidmaps_*.tar.gz
 biodbLipidmaps_*.tgz
 biodbLipidmaps.Rcheck
 cache
+check.Renviron
 doc
 man
 Meta
