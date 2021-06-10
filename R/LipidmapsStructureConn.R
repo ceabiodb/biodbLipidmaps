@@ -171,9 +171,41 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
     return(results)
 },
 
+wsLmsd=function(lmid, format=c('tsv', 'csv'),
+    retfmt=c('plain', 'request', 'parsed')) {
+    ":\n\nCalls LMSD web service for downloading one entry.
+    \nReturned value: Depending on `retfmt`.
+    "
+
+    format <- match.arg(format)
+    retfmt <- match.arg(retfmt)
+    chk::chk_string(lmid)
+
+    # Build request
+    url <- paste0(.self$getPropValSlot('urls', 'lmsd.url'), lmid)
+    params <- list(format=format)
+    request <- .self$makeRequest(method='get',
+        url=BiodbUrl$new(url=url, params=params))
+    if (retfmt == 'request')
+        return(request)
+
+    # Send request
+    results <- .self$getBiodb()$getRequestScheduler()$sendRequest(request)
+
+    # Parse
+    if (retfmt != 'plain') {
+        sep <- if (format == 'tsv') "\t" else ','
+        results <- read.table(text=results, sep=sep, header=TRUE,
+                              comment.char='', stringsAsFactors=FALSE,
+                              quote='"', fill=TRUE)
+    }
+
+    return(results)
+},
+
 wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
-                      output.quote=NULL, output.column.header=NULL,
-                      retfmt=c('plain', 'request', 'parsed')) {
+    output.quote=NULL, output.column.header=NULL,
+    retfmt=c('plain', 'request', 'parsed')) {
     ":\n\nCalls LMSDRecord web service. See
     http://www.lipidmaps.org/data/structure/programmaticaccess.html.
     \nlmid: A character vector containing the IDs of the wanted entries.
@@ -191,7 +223,10 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     \nReturned value: Depending on `retfmt`.
     "
 
+    lifecycle::deprecate_stop('0.99.0', 'wsLmsdRecord()')
+
     retfmt <- match.arg(retfmt)
+    chk::chk_string(lmid)
 
     # Check parameters
     if ( ! is.null(mode) && ! mode %in% c('File', 'Download'))
@@ -291,9 +326,8 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
 },
 
 .doGetEntryContentRequest=function(ids, concatenate=TRUE) {
-    fct <- function(id) .self$wsLmsdRecord(lmid=id, mode='File',
-                                           output.type='CSV',
-                                           retfmt='request')$getUrl()$toString()
+    fct <- function(id) .self$wsLmsd(lmid=id, format='tsv',
+        retfmt='request')$getUrl()$toString()
     return(vapply(ids, fct, FUN.VALUE=''))
 },
 
@@ -301,7 +335,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
 
     # Retrieve all IDs
     ids <- .self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
-                              retfmt='ids')
+        retfmt='ids')
 
     return(ids)
 }

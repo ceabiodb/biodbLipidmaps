@@ -3,7 +3,7 @@
 databases:
 
   lipidmaps.structure:
-    entry.content.type: csv
+    entry.content.type: tsv
     name: LIPID MAPS Structure
     parsing.expr:
       accession: LM_ID
@@ -22,6 +22,7 @@ databases:
         - monoisotopic.mass
     urls:
       base.url: https://www.lipidmaps.org/data/
+      lmsd.url: https://www.lipidmaps.org/databases/lmsd/
 
 fields:
 

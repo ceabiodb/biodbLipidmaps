@@ -16,3 +16,4 @@ makefile: yes
 rcpp: no
 vignetteName: intro
 githubRepos: pkrog/biodbLipidmaps
+travis: no

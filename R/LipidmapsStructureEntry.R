@@ -26,11 +26,12 @@ methods=list(
 
 initialize=function(...) {
 
-    callSuper(na.strings=c('', '-'), ...)
+    callSuper(na.strings=c('', '-', 'NA'), quotes='"', sep="\t", ...)
 },
 
 .isContentCorrect=function(content) {
-    return( ! grepl("No records? found", content))
+    valid <- ! grepl("No records? found", content)
+    return(valid)
 },
 
 .parseFieldsStep2=function(parsed.content) {

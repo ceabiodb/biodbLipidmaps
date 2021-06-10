@@ -13,20 +13,24 @@ test_wsLmsdRecord_searchByName <- function(conn) {
 
 test_wsLmsdRecord <- function(conn) {
 
-	results <- conn$wsLmsdRecord(lmid='LMFA08040013')
-	expect_is(results, 'character')
-	expect_length(results, 1)
+    # LMSDRecord.php is no more functional
+    lifecycle::expect_defunct(conn$wsLmsdRecord(lmid='LMFA08040013', mode='File',
+        output.type='CSV', retfmt='id'))
 
-	# No parsing possible (output.type not selected)
-	expect_error(conn$wsLmsdRecord(lmid='LMFA08040013', mode='File',
-                                   retfmt='parsed'),
-                 regexp='^.*Only TSV and CSV output types are parsable\\.$')
-
-	# Parse results successfully
-	results <- conn$wsLmsdRecord(lmid='LMFA08040013', mode='File',
-                                 output.type='CSV', retfmt='parsed')
-	expect_is(results, 'data.frame')
-	expect_equal(nrow(results), 1)
+#	results <- conn$wsLmsdRecord(lmid='LMFA08040013')
+#	expect_is(results, 'character')
+#	expect_length(results, 1)
+#
+#	# No parsing possible (output.type not selected)
+#	expect_error(conn$wsLmsdRecord(lmid='LMFA08040013', mode='File',
+#                                   retfmt='parsed'),
+#                 regexp='^.*Only TSV and CSV output types are parsable\\.$')
+#
+#	# Parse results successfully
+#	results <- conn$wsLmsdRecord(lmid='LMFA08040013', mode='File',
+#                                 output.type='CSV', retfmt='parsed')
+#	expect_is(results, 'data.frame')
+#	expect_equal(nrow(results), 1)
 }
 
 test_wsLmsdSearch <- function(conn) {
