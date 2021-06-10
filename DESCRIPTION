@@ -9,9 +9,9 @@ Encoding: UTF-8
 LazyData: true
 VignetteBuilder: knitr
 Depends:
-    R (>= 4.0)
+    R (>= 4.1)
 Imports:
-    biodb (>= 0.99.0),
+    biodb (>= 1.0.4),
 	methods
 Suggests:
 	BiocStyle,

@@ -9,13 +9,16 @@ biodbLipidmaps_*.tar.gz
 biodbLipidmaps_*.tgz
 biodbLipidmaps.Rcheck
 cache
+cache*
 check.Renviron
 doc
+longtests/*/output
 man
 Meta
 src-i386
 src-x64
 src/*.rds
+tests/*/output
 tests/testthat/output
 vignettes/*.html
 vignettes/*.md

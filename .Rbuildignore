@@ -1,10 +1,12 @@
 ^.*\.dockerfile$
 ^.*\.log$
+^.BBSoptions$
 ^\.travis\.yml$
 ^biodb_ext\.yml$
 ^biodb.*_.*\.tar\.gz$
 ^biodb.*\.check\.cache$
 ^biodb.*\.Rcheck$
+^cache.*$
 ^cache$
 ^check.Renviron$
 ^codecov\.yml$
@@ -15,6 +17,7 @@
 ^LICENSE$
 ^Makefile$
 ^Meta$
+^R_front$
 ^scripts$
 ^tests/dockerfiles$
 ^tests/testthat/_snaps$
