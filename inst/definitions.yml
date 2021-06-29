@@ -3,6 +3,8 @@
 databases:
 
   lipidmaps.structure:
+    remote: true
+    compound.db: true
     entry.content.type: tsv
     name: LIPID MAPS Structure
     parsing.expr:

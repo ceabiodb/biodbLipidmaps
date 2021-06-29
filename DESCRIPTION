@@ -12,7 +12,7 @@ Depends:
     R (>= 4.1)
 Imports:
     biodb (>= 1.0.4),
-	methods
+	R6
 Suggests:
 	BiocStyle,
 	lgr,

@@ -16,32 +16,33 @@
 #' mybiodb$terminate()
 #'
 #' @import biodb
-#' @import methods
-#' @export LipidmapsStructureEntry
-#' @exportClass LipidmapsStructureEntry
-LipidmapsStructureEntry <- methods::setRefClass("LipidmapsStructureEntry",
-    contains='BiodbCsvEntry',
+#' @import R6
+#' @export
+LipidmapsStructureEntry <- R6::R6Class("LipidmapsStructureEntry",
+inherit=biodb::BiodbCsvEntry,
 
-methods=list(
+public=list(
 
 initialize=function(...) {
 
-    callSuper(na.strings=c('', '-', 'NA'), quotes='"', sep="\t", ...)
-},
+    super$initialize(na.strings=c('', '-', 'NA'), quotes='"', sep="\t", ...)
+}
+),
 
-.isContentCorrect=function(content) {
+private=list(
+isContentCorrect=function(content) {
     valid <- ! grepl("No records? found", content)
     return(valid)
 },
 
-.parseFieldsStep2=function(parsed.content) {
+parseFieldsStep2=function(parsed.content) {
 
     # Set synonyms 
-    if (.self$hasField('SYNONYMS')) {
-        v <- strsplit(.self$getFieldValue('SYNONYMS'), ';')[[1]]
+    if (self$hasField('SYNONYMS')) {
+        v <- strsplit(self$getFieldValue('SYNONYMS'), ';')[[1]]
         v <- sub('^ +', '', v, perl=TRUE)
         v <- sub(' +$', '', v, perl=TRUE)
-        .self$setFieldValue('SYNONYMS', v)
+        self$setFieldValue('SYNONYMS', v)
     }
 
     # Synonyms
@@ -49,9 +50,8 @@ initialize=function(...) {
         v <- parsed.content[['SYNONYMS']]
         if ( ! is.na(v)) {
             v <- strsplit(v, ' *; *')[[1]]
-            .self$appendFieldValue('name', v)
+            self$appendFieldValue('name', v)
         }
     }
 }
-
 ))
