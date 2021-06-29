@@ -16,58 +16,55 @@
 #' mybiodb$terminate()
 #'
 #' @import biodb
-#' @import methods
-#' @export LipidmapsStructureConn
-#' @exportClass LipidmapsStructureConn
-LipidmapsStructureConn <- methods::setRefClass("LipidmapsStructureConn",
-    contains=c("BiodbRemotedbConn", "BiodbCompounddbConn"),
+#' @import R6
+#' @export
+LipidmapsStructureConn <- R6::R6Class("LipidmapsStructureConn",
+inherit=biodb::BiodbConn,
 
-methods=list(
+public=list(
 
 getEntryPageUrl=function(id) {
     # Overrides super class' method.
 
-    u <- .self$getPropValSlot('urls', 'base.url')
+    u <- self$getPropValSlot('urls', 'base.url')
     fct <- function(x) BiodbUrl$new(url=u, params=list(LMID=x))$toString()
     return(vapply(id, fct, FUN.VALUE=''))
 },
 
+#' @description
+#' Calls LMSDSearch web service. See
+#' https://www.lipidmaps.org/data/structure/programmaticaccess.html for
+#' details.
+#' @param mode The search mode: 'ProcessStrSearch', 'ProcessTextSearch' or
+#' 'ProcessTextOntologySearch'. Compulsory.
+#' @param output.mode If set to 'File', will output a in format `output.type`,
+#' otherwise will output HTML.
+#' @param output.type The output format: 'TSV', 'CSV' or 'SDF'.
+#' @param output.delimiter The delimiter for TSV or CSV formats: 'Tab', 'Comma',
+#' 'Semicolon'.
+#' @param output.quote If quotes are to be used: 'Yes' or 'No'.
+#' @param output.column.header If header must be output: 'Yes' or 'No'.
+#' @param lmid a Lipidmaps ID.
+#' @param name The name to search for.
+#' @param formula The chemical formula to search for.
+#' @param search.type The search type: 'SubStructure' or 'ExactMatch'.
+#' @param smiles.string A SMILES to search for.
+#' @param exact.mass The mass to search for.
+#' @param exact.mass.offset The tolerance on the mass search.
+#' @param core.class An integer number from 1 to 8.
+#' @param main.class An integer number. See Lipidmaps documentation.
+#' @param sub.class An integer number. See Lipidmaps documentation.
+#' @param retfmt Use to set the format of the returned value. 'plain' will
+#' return the raw results from the server, as a character value. 'request' will
+#' return the request that would have been sent, as a BiodbRequest object.
+#' 'parsed' will return data frame. 'ids' will return a character vector
+#' containing the IDs of the matching entries.
+#' @return Depending on `retfmt`.
 wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
-                      output.delimiter=NULL, output.quote=NULL,
-                      output.column.header=NULL, lmid=NULL, name=NULL,
-                      formula=NULL, search.type=NULL, smiles.string=NULL,
-                      exact.mass=NULL, exact.mass.offset=NULL,
-                      core.class=NULL, main.class=NULL, sub.class=NULL,
-                      retfmt=c('plain', 'request', 'parsed', 'ids')) {
-    ":\n\nCalls LMSDSearch web service. See
-    https://www.lipidmaps.org/data/structure/programmaticaccess.html for
-    details.
-    \nmode: The search mode: 'ProcessStrSearch', 'ProcessTextSearch' or
-    'ProcessTextOntologySearch'. Compulsory.
-    \noutput.mode: If set to 'File', will output a in format `output.type`,
-    otherwise will output HTML.
-    \noutput.type: The output format: 'TSV', 'CSV' or 'SDF'.
-    \noutput.delimiter: The delimiter for TSV or CSV formats: 'Tab', 'Comma',
-    'Semicolon'.
-    \noutput.quote: If quotes are to be used: 'Yes' or 'No'.
-    \noutput.column.header: If header must be output: 'Yes' or 'No'.
-    \nlmid: a Lipidmaps ID.
-    \nname: The name to search for.
-    \nformula: The chemical formula to search for.
-    \nsearch.type: The search type: 'SubStructure' or 'ExactMatch'.
-    \nsmiles.string: A SMILES to search for.
-    \nexact.mass: The mass to search for.
-    \nexact.mass.offset: The tolerance on the mass search.
-    \ncore.class: An integer number from 1 to 8.
-    \nmain.class: An integer number. See Lipidmaps documentation.
-    \nsub.class: An integer number. See Lipidmaps documentation.
-    \nretfmt: Use to set the format of the returned value. 'plain' will return
-    the raw results from the server, as a character value. 'request' will return
-    the request that would have been sent, as a BiodbRequest object. 'parsed'
-    will return data frame. 'ids' will return a character vector containing the
-    IDs of the matching entries.
-    \nReturned value: Depending on `retfmt`.
-    "
+    output.delimiter=NULL, output.quote=NULL, output.column.header=NULL,
+    lmid=NULL, name=NULL, formula=NULL, search.type=NULL, smiles.string=NULL,
+    exact.mass=NULL, exact.mass.offset=NULL, core.class=NULL, main.class=NULL,
+    sub.class=NULL, retfmt=c('plain', 'request', 'parsed', 'ids')) {
 
     retfmt <- match.arg(retfmt)
 
@@ -133,14 +130,14 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
         params <- c(params, MainClass=main.class)
     if ( ! is.null(sub.class))
         params <- c(params, SubClass=sub.class)
-    u <- BiodbUrl$new(url=c(.self$getPropValSlot('urls', 'base.url'),
+    u <- BiodbUrl$new(url=c(self$getPropValSlot('urls', 'base.url'),
                         'structure', 'LMSDSearch.php'), params=params)
-    request <- .self$makeRequest(method='get', url=u)
+    request <- self$makeRequest(method='get', url=u)
     if (retfmt == 'request')
         return(request)
 
     # Send request
-    results <- .self$getBiodb()$getRequestScheduler()$sendRequest(request)
+    results <- self$getBiodb()$getRequestScheduler()$sendRequest(request)
 
     # Parse
     if (retfmt != 'plain' && output.mode == 'File') {
@@ -171,26 +168,26 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
     return(results)
 },
 
+#' @description
+#' Calls LMSD web service for downloading one entry.
+#' @return Depending on `retfmt`.
 wsLmsd=function(lmid, format=c('tsv', 'csv'),
     retfmt=c('plain', 'request', 'parsed')) {
-    ":\n\nCalls LMSD web service for downloading one entry.
-    \nReturned value: Depending on `retfmt`.
-    "
 
     format <- match.arg(format)
     retfmt <- match.arg(retfmt)
     chk::chk_string(lmid)
 
     # Build request
-    url <- paste0(.self$getPropValSlot('urls', 'lmsd.url'), lmid)
+    url <- paste0(self$getPropValSlot('urls', 'lmsd.url'), lmid)
     params <- list(format=format)
-    request <- .self$makeRequest(method='get',
+    request <- self$makeRequest(method='get',
         url=BiodbUrl$new(url=url, params=params))
     if (retfmt == 'request')
         return(request)
 
     # Send request
-    results <- .self$getBiodb()$getRequestScheduler()$sendRequest(request)
+    results <- self$getBiodb()$getRequestScheduler()$sendRequest(request)
 
     # Parse
     if (retfmt != 'plain') {
@@ -203,25 +200,25 @@ wsLmsd=function(lmid, format=c('tsv', 'csv'),
     return(results)
 },
 
+#' @description
+#' Calls LMSDRecord web service. See
+#' http://www.lipidmaps.org/data/structure/programmaticaccess.html.
+#' @param lmid A character vector containing the IDs of the wanted entries.
+#' @param output.mode If set to 'File', will output a in format `output.type`,
+#' otherwise will output HTML.
+#' @param output.type The output format: 'TSV', 'CSV' or 'SDF'.
+#' @param output.delimiter The delimiter for TSV or CSV formats: 'Tab', 'Comma',
+#' 'Semicolon'.
+#' @param output.quote If quotes are to be used: 'Yes' or 'No'.
+#' @param output.column.header If header must be output: 'Yes' or 'No'.
+#' @param retfmt Use to set the format of the returned value. 'plain' will
+#' return the raw results from the server, as a character value. 'request' will
+#' return the request that would have been sent, as a BiodbRequest object.
+#' 'parsed' will return data frame.
+#' @return Depending on `retfmt`.
 wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     output.quote=NULL, output.column.header=NULL,
     retfmt=c('plain', 'request', 'parsed')) {
-    ":\n\nCalls LMSDRecord web service. See
-    http://www.lipidmaps.org/data/structure/programmaticaccess.html.
-    \nlmid: A character vector containing the IDs of the wanted entries.
-    \noutput.mode: If set to 'File', will output a in format `output.type`,
-    otherwise will output HTML.
-    \noutput.type: The output format: 'TSV', 'CSV' or 'SDF'.
-    \noutput.delimiter: The delimiter for TSV or CSV formats: 'Tab', 'Comma',
-    'Semicolon'.
-    \noutput.quote: If quotes are to be used: 'Yes' or 'No'.
-    \noutput.column.header: If header must be output: 'Yes' or 'No'.
-    \nretfmt: Use to set the format of the returned value. 'plain' will return
-    the raw results from the server, as a character value. 'request' will return
-    the request that would have been sent, as a BiodbRequest object. 'parsed'
-    will return data frame.
-    \nReturned value: Depending on `retfmt`.
-    "
 
     lifecycle::deprecate_stop('0.99.0', 'wsLmsdRecord()')
 
@@ -248,7 +245,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
                     '" for output.column.header parameter.')
 
     # Build request
-    url <- paste0(.self$getPropValSlot('urls', 'base.url'), 'LMSDRecord.php')
+    url <- paste0(self$getPropValSlot('urls', 'base.url'), 'LMSDRecord.php')
     params <- list(LMID=lmid)
     if ( ! is.null(mode))
         params <- c(params, Mode=mode)
@@ -260,13 +257,13 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
         params <- c(params, OutputQuote=output.quote)
     if ( ! is.null(output.column.header))
         params <- c(params, OutputColumnHeader=output.column.header)
-    request <- .self$makeRequest(method='get',
+    request <- self$makeRequest(method='get',
                                  url=BiodbUrl$new(url=url, params=params))
     if (retfmt == 'request')
         return(request)
 
     # Send request
-    results <- .self$getBiodb()$getRequestScheduler()$sendRequest(request)
+    results <- self$getBiodb()$getRequestScheduler()$sendRequest(request)
 
     # Parse
     if (retfmt != 'plain' && mode %in% c('File', 'Download')) {
@@ -291,9 +288,11 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     }
 
     return(results)
-},
+}
+),
 
-.doSearchForEntries=function(fields=NULL, max.results=0) {
+private=list(
+doSearchForEntries=function(fields=NULL, max.results=0) {
 
     ids <- character()
 
@@ -312,7 +311,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
         name <- fields$name
 
         # Search
-        ids <- .self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
+        ids <- self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
                                   name=name, exact.mass=exact.mass,
                                   exact.mass.offset=exact.mass.offset,
                                   retfmt='ids')
@@ -325,19 +324,18 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     return(ids)
 },
 
-.doGetEntryContentRequest=function(ids, concatenate=TRUE) {
-    fct <- function(id) .self$wsLmsd(lmid=id, format='tsv',
+doGetEntryContentRequest=function(ids, concatenate=TRUE) {
+    fct <- function(id) self$wsLmsd(lmid=id, format='tsv',
         retfmt='request')$getUrl()$toString()
     return(vapply(ids, fct, FUN.VALUE=''))
 },
 
-.doGetEntryIds=function(max.results=NA_integer_) {
+doGetEntryIds=function(max.results=NA_integer_) {
 
     # Retrieve all IDs
-    ids <- .self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
+    ids <- self$wsLmsdSearch(mode='ProcessStrSearch', output.mode='File',
         retfmt='ids')
 
     return(ids)
 }
-
 ))

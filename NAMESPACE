@@ -2,7 +2,5 @@
 
 export(LipidmapsStructureConn)
 export(LipidmapsStructureEntry)
-exportClasses(LipidmapsStructureConn)
-exportClasses(LipidmapsStructureEntry)
 import(biodb)
 import(methods)
