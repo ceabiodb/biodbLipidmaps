@@ -2,5 +2,5 @@
 
 export(LipidmapsStructureConn)
 export(LipidmapsStructureEntry)
+import(R6)
 import(biodb)
-import(methods)

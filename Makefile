@@ -1,4 +1,4 @@
-# Makefile for biodb extensions packages, version 1.4.3
+# Makefile for biodb extensions packages, version 1.4.6
 # vi: ft=make
 
 # Mute R 3.6 "Registered S3 method overwritten" warning messages.
@@ -38,6 +38,11 @@ BIOC_CHECK_FLAGS=quit-with-status
 ifeq (true,$(NEWPKG))
 BIOC_CHECK_FLAGS+=new-package
 endif
+CHECK_RENVIRON=check.Renviron
+export R_CHECK_ENVIRON=$(shell realpath $(CHECK_RENVIRON))
+RENVIRON_BIOC=Renviron.bioc
+export RENVIRON_USER=$(shell realpath $(RENVIRON_BIOC))
+RENVIRON_FILES=$(CHECK_RENVIRON) $(RENVIRON_BIOC)
 
 # Check files
 ifeq (,$(wildcard DESCRIPTION))
@@ -53,7 +58,16 @@ export BIODB_CACHE_DIRECTORY=$(CACHE)
 ifndef TESTTHAT_REPORTER
 ifdef VIM
 TESTTHAT_REPORTER=summary
-ERROR_MSG_FILTER= | sed 's!\([^/A-Za-z_-]\)\(test[^/A-Za-z][^/]\+\.R\)!\1tests/testthat/\2!'
+
+# Call stack
+# 8. .self$.parseDbLinks(parsed.content) R/KeggCompoundEntry.R:37:4
+ERROR_MSG_FILTER= | sed -e 's!^ *\([0-9]\+\. \)!Callstack \1!'
+
+# Adjust path to test source file in tests/testthat
+ERROR_MSG_FILTER+= -e 's!\([^/A-Za-z_-]\)\(test[^/A-Za-z][^/]\+\.R\)!\1tests/testthat/\2!'
+
+# TODO Adjust path to test source file in longtests/testthat
+
 else
 TESTTHAT_REPORTER=progress
 ERROR_MSG_FILTER=
@@ -94,10 +108,6 @@ else
 TEST_FILE:='$(TEST_FILE)'
 endif
 
-# Check
-CHECK_RENVIRON=check.Renviron
-export R_CHECK_ENVIRON=$(CHECK_RENVIRON)
-
 # Display values of main variables
 $(info R_VERSION=$(R_VERSION))
 $(info R_FRONT=$(R_FRONT))
@@ -115,7 +125,19 @@ $(info TEST_FILE=$(TEST_FILE))
 $(info BIODB_TEST_FUNCTIONS=$(BIODB_TEST_FUNCTIONS))
 
 # Default target
-all: $(COMPILE)
+all:
+
+# Rebuild all & install
+rebuild:
+	# We use a recursive call to force the clean target to be called each time needed (like for checking)
+	$(MAKE) clean.all
+	$(MAKE) compile
+	$(MAKE) doc
+	$(MAKE) test.all
+	$(MAKE) check.all
+	$(MAKE) install
+
+compile: $(COMPILE)
 
 # Compiling
 ifdef COMPILE
@@ -131,11 +153,11 @@ coverage:
 	$(R) $(RFLAGS) -e "covr::codecov(token='$(value CODECOV_$(PKG_NAME_CAPS)_TOKEN)', quiet=FALSE)"
 
 # Plain check
-check: clean.vignettes $(CHECK_RENVIRON) $(ZIPPED_PKG)
+check: clean.vignettes $(RENVIRON_FILES) $(ZIPPED_PKG)
 	$(R) $(RFLAGS) CMD check $(ZIPPED_PKG)
 
 # Bioconductor check
-bioc.check: clean.vignettes $(CHECK_RENVIRON) $(ZIPPED_PKG)
+bioc.check: clean.vignettes $(RENVIRON_FILES) $(ZIPPED_PKG)
 	$(R) $(RFLAGS) -e 'if ( ! require(BiocManager)) install.packages("BiocManager", dependencies=TRUE, repos="https://cloud.r-project.org/") ; if ( ! require(BiocCheck)) BiocManager::install("BiocCheck") ; BiocCheck::BiocCheck("$(ZIPPED_PKG)"$(patsubst %,$(COMMA) `%`=TRUE,$(BIOC_CHECK_FLAGS)))' 2>&1 | sed 's!^ *\(R\|man\|vignettes\)/!Issue in \1/!'
 
 # Bioconductor check Git clone
@@ -145,7 +167,10 @@ bioc.check.clone: clean clean.cache
 check.all: bioc.check.clone check bioc.check
 
 $(CHECK_RENVIRON):
-	wget https://raw.githubusercontent.com/Bioconductor/packagebuilder/master/check.Renviron
+	wget -O $@ 'https://raw.githubusercontent.com/Bioconductor/packagebuilder/master/check.Renviron'
+
+$(RENVIRON_BIOC):
+	wget -O $@ 'http://bioconductor.org/checkResults/devel/bioc-LATEST/Renviron.bioc'
 
 longtests: BIODB_CACHE_DIRECTORY=$(LONG_CACHE)
 tests longtests: $(COMPILE)
@@ -165,7 +190,7 @@ win:
 	$(R) $(RFLAGS) -e "devtools::check_win_devel('$(CURDIR)')"
 
 # Build package zip
-build: $(ZIPPED_PKG)
+pkg: $(ZIPPED_PKG)
 
 # Make zip
 $(ZIPPED_PKG): clean.vignettes doc
@@ -216,7 +241,7 @@ endif
 	$(RM) *.log
 	$(RM) .Rhistory
 	$(RM) $(PKG_NAME)_*.tar.gz
-	$(RM) $(CHECK_RENVIRON)
+	$(RM) $(RENVIRON_FILES)
 
 clean.all: clean clean.cache
 	@echo "Clean also what is versioned but can be rebuilt."
