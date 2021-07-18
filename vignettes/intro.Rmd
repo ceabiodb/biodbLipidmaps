@@ -37,10 +37,9 @@ terminated with a call to the `terminate()` method.
 
 # Creating a connector to Lipidmaps Structure
 
-In *biodb* the connection to a database is handled by a connector instance that
+In *biodb* connections to databases are handled by connector instances that
 you can get from the factory.
-biodbLipidmaps implements a connector to a remote database.
-Here is the code to instantiate a connector:
+Here is the code to instantiate a connector to Lipidmaps Structure database:
 ```{r}
 conn <- mybiodb$getFactory()$createConn('lipidmaps.structure')
 ```
@@ -64,7 +63,7 @@ entries <- conn$getEntry(ids)
 entries
 ```
 
-To convert a list of entries into a dataframe, run:
+To convert a list of entries into a data frame, run:
 ```{r}
 x <- mybiodb$entriesToDataframe(entries)
 x

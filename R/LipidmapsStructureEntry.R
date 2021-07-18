@@ -23,19 +23,24 @@ inherit=biodb::BiodbCsvEntry,
 
 public=list(
 
+#' @description
+#' New instance initializer. Entry classes must not be instantiated
+#' directly. Instead, you must use the getEntry() method of the connector class.
+#' @param ... All parameters are passed to super class' initializer.
+#' @return Nothing.
 initialize=function(...) {
-
     super$initialize(na.strings=c('', '-', 'NA'), quotes='"', sep="\t", ...)
 }
 ),
 
 private=list(
-isContentCorrect=function(content) {
+
+doCheckContent=function(content) {
     valid <- ! grepl("No records? found", content)
     return(valid)
-},
+}
 
-parseFieldsStep2=function(parsed.content) {
+,doParseFieldsStep2=function(parsed.content) {
 
     # Set synonyms 
     if (self$hasField('SYNONYMS')) {
