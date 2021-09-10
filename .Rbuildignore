@@ -1,5 +1,6 @@
 ^.*\.dockerfile$
 ^.*\.log$
+^.*rds$
 ^.BBSoptions$
 ^\.travis\.yml$
 ^biodb_ext\.yml$

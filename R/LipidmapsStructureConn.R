@@ -82,6 +82,7 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
 
     # Send request
     results <- self$getBiodb()$getRequestScheduler()$sendRequest(request)
+    results <- unlist(results)
 
     # Parse
     if (retfmt != 'plain' && output.mode == 'File')
