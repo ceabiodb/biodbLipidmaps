@@ -4,7 +4,8 @@
   "comp.iupac.name.syst": "N-hexadecanoyl-ethanolamine",
   "formula": "C18H37NO2",
   "kegg.compound.id": "C16512",
-  "monoisotopic.mass": 299.28,
+  "monoisotopic.mass": 299.282429,
   "hmdb.metabolites.id": "HMDB0002100",
-  "ncbi.pubchem.comp.id": "XPR7013"
+  "ncbi.pubchem.comp.id": "4671",
+  "chebi.id": "71464"
 }
