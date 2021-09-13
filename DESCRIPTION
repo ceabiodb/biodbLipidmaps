@@ -11,7 +11,7 @@ VignetteBuilder: knitr
 Depends:
     R (>= 4.1)
 Imports:
-    biodb (>= 1.1.4),
+    biodb (>= 1.1.5),
     lifecycle,
 	R6
 Suggests:
