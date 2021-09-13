@@ -17,6 +17,7 @@
 #'
 #' @import biodb
 #' @import R6
+#' @import lifecycle
 #' @export
 LipidmapsStructureConn <- R6::R6Class("LipidmapsStructureConn",
 inherit=biodb::BiodbConn,

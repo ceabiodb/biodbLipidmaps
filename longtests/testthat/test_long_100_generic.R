@@ -33,7 +33,9 @@ conn <- biodb$getFactory()$createConn('lipidmaps.structure')
 #
 # IMPORTANT Once you are done with the JSON files, uncomment the following line
 # in order to enable generic tests to run:
-biodb::runGenericTests(conn, short=FALSE, long=TRUE, list(max.results=1))
+testRefFolder <- system.file("testref", package='biodbLipidmaps')
+biodb::runGenericTests(conn, pkgName='biodbLipidmaps', short=FALSE, long=TRUE,
+    testRefFolder=testRefFolder, opt=list(max.results=1))
 
 # Terminate Biodb
 biodb$terminate()

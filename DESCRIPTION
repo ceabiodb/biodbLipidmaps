@@ -11,7 +11,8 @@ VignetteBuilder: knitr
 Depends:
     R (>= 4.1)
 Imports:
-    biodb (>= 1.0.4),
+    biodb (>= 1.1.4),
+    lifecycle,
 	R6
 Suggests:
 	BiocStyle,
@@ -22,7 +23,7 @@ Suggests:
 	knitr,
 	rmarkdown,
     covr
-RoxygenNote: 7.1.1
+RoxygenNote: 7.1.2
 Collate:
     'LipidmapsStructureConn.R'
     'LipidmapsStructureEntry.R'

@@ -12,7 +12,9 @@ biodb$loadDefinitions(defFile)
 conn <- biodb$getFactory()$createConn('lipidmaps.structure')
 
 # Run generic tests
-biodb::runGenericTests(conn, list(max.results=1))
+testRefFolder <- system.file("testref", package='biodbLipidmaps')
+biodb::runGenericTests(conn, pkgName='biodbLipidmaps',
+    testRefFolder=testRefFolder, opt=list(max.results=1))
 
 # Terminate Biodb
 biodb$terminate()
