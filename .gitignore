@@ -13,7 +13,6 @@ cache*
 check.Renviron
 doc
 longtests/*/output
-man
 Meta
 Renviron.bioc
 src-i386
