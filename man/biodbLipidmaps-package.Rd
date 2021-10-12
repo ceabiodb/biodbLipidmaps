@@ -18,6 +18,6 @@ vignette('intro', package='biodbLipidmaps')
 \link{LipidmapsStructureConn}.
 }
 \author{
-\strong{Maintainer}: Pierrick Roger \email{pierrick.roger@cea.fr}
+\strong{Maintainer}: Pierrick Roger \email{pierrick.roger@cea.fr} (\href{https://orcid.org/0000-0001-8177-4873}{ORCID})
 
 }

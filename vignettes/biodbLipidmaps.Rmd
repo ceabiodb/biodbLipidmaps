@@ -4,22 +4,31 @@ author: "Pierrick Roger"
 date: "`r BiocStyle::doc_date()`"
 package: "`r BiocStyle::pkg_ver('biodbLipidmaps')`"
 vignette: |
-  %\VignetteIndexEntry{Introduction to the biodbLipidmaps package.}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
+    %\VignetteIndexEntry{An introduction to biodbLipidmaps}
+    %\VignetteEngine{knitr::rmarkdown}
+    %\VignetteEncoding{UTF-8}
 output:
-  BiocStyle::html_document:
-    toc: yes
-    toc_depth: 4
-    toc_float:
-      collapsed: false
-  BiocStyle::pdf_document: default
+    BiocStyle::html_document:
+        toc: yes
+        toc_depth: 4
+        toc_float:
+            collapsed: false
+    BiocStyle::pdf_document: default
+bibliography: references.bib
 ---
 
-# Purpose
+# Introduction
 
 biodbLipidmaps is a *biodb* extension package that implements a connector to
-Lipidmaps Structure.
+Lipidmaps Structure [@sud2007_LipidMaps_LMSD].
+
+# Installation
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE))
+    install.packages("BiocManager")
+BiocManager::install('biodbLipidmaps')
+```
 
 # Initialization
 
@@ -100,3 +109,11 @@ ensure release of resources (file handles, database connection, etc):
 ```{r}
 mybiodb$terminate()
 ```
+
+# Session information
+
+```{r}
+sessionInfo()
+```
+
+# References

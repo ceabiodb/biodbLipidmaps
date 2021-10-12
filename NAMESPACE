@@ -2,6 +2,6 @@
 
 export(LipidmapsStructureConn)
 export(LipidmapsStructureEntry)
-import(R6)
-import(biodb)
-import(lifecycle)
+importFrom(R6,R6Class)
+importFrom(biodb,BiodbConn)
+importFrom(lifecycle,deprecate_stop)

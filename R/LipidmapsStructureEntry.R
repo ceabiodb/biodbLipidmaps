@@ -15,8 +15,7 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import biodb
-#' @import R6
+#' @importFrom R6 R6Class
 #' @export
 LipidmapsStructureEntry <- R6::R6Class("LipidmapsStructureEntry",
 inherit=biodb::BiodbCsvEntry,

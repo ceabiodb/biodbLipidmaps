@@ -24,3 +24,5 @@ testthat-problems.rds
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
+/doc/
+/Meta/

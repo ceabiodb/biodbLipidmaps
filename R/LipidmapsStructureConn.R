@@ -15,9 +15,9 @@
 #' # Terminate instance.
 #' mybiodb$terminate()
 #'
-#' @import biodb
-#' @import R6
-#' @import lifecycle
+#' @importFrom biodb BiodbConn
+#' @importFrom R6 R6Class
+#' @importFrom lifecycle deprecate_stop
 #' @export
 LipidmapsStructureConn <- R6::R6Class("LipidmapsStructureConn",
 inherit=biodb::BiodbConn,
@@ -116,7 +116,7 @@ wsLmsd=function(lmid, format=c('tsv', 'csv'),
     url <- paste0(self$getPropValSlot('urls', 'lmsd.url'), lmid)
     params <- list(format=format)
     request <- self$makeRequest(method='get',
-        url=BiodbUrl$new(url=url, params=params))
+        url=biodb::BiodbUrl$new(url=url, params=params))
     if (retfmt == 'request')
         return(request)
 
@@ -179,7 +179,7 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
     if ( ! is.null(output.column.header))
         params <- c(params, OutputColumnHeader=output.column.header)
     request <- self$makeRequest(method='get',
-        url=BiodbUrl$new(url=url, params=params))
+        url=biodb::BiodbUrl$new(url=url, params=params))
     if (retfmt == 'request')
         return(request)
 
@@ -249,7 +249,8 @@ doSearchForEntries=function(fields=NULL, max.results=0) {
 ,doGetEntryPageUrl=function(id) {
 
     u <- self$getPropValSlot('urls', 'base.url')
-    fct <- function(x) BiodbUrl$new(url=u, params=list(LMID=x))$toString()
+    fct <- function(x) biodb::BiodbUrl$new(url=u,
+        params=list(LMID=x))$toString()
     return(vapply(id, fct, FUN.VALUE=''))
 }
 
@@ -289,7 +290,7 @@ doSearchForEntries=function(fields=NULL, max.results=0) {
         params <- c(params, MainClass=main.class)
     if ( ! is.null(sub.class))
         params <- c(params, SubClass=sub.class)
-    u <- BiodbUrl$new(url=c(self$getPropValSlot('urls', 'base.url'),
+    u <- biodb::BiodbUrl$new(url=c(self$getPropValSlot('urls', 'base.url'),
                         'structure', 'LMSDSearch.php'), params=params)
     request <- self$makeRequest(method='get', url=u)
 

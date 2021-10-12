@@ -1,3 +1,8 @@
+Changes in version 0.99.2 (2021-10-12)
++ Add ORCID, URL and BugReports.
++ Add citation into vignette.
++ Add install and session info sections to vignette.
+
 Changes in version 0.99.1 (2021-09-29)
 + Complete README.
 + Slight corrections for Bioconductor submission.
