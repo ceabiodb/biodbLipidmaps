@@ -1,6 +1,6 @@
 Package: biodbLipidmaps
 Title: biodbLipidmaps, a library for connecting to the Lipidmaps Structure database
-Version: 0.99.2
+Version: 0.99.3
 Authors@R: c(person("Pierrick", "Roger", email="pierrick.roger@cea.fr", role=c("aut", "cre"), comment=c(ORCID="0000-0001-8177-4873")))
 Description: The biodbLipidmaps library provides access to the Lipidmaps
     Structure Database, using biodb package framework. It allows to retrieve

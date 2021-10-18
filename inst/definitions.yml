@@ -17,8 +17,6 @@ databases:
       exact.mass: MASS
       formula: FORMULA
       name: COMMON_NAME
-    scheduler.n: 1
-    scheduler.t: 20
     searchable.fields:
         - name
         - monoisotopic.mass

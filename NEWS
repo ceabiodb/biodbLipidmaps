@@ -1,3 +1,6 @@
+Changes in version 0.99.3 (2021-10-18)
++ Remove deprecated slow frequency of request send.
+
 Changes in version 0.99.2 (2021-10-12)
 + Add ORCID, URL and BugReports.
 + Add citation into vignette.
