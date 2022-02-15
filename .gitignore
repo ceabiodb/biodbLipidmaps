@@ -5,6 +5,8 @@
 .Rhistory
 .swp
 *.log
+/doc/
+/Meta/
 biodbLipidmaps_*.tar.gz
 biodbLipidmaps_*.tgz
 biodbLipidmaps.Rcheck
@@ -24,5 +26,3 @@ testthat-problems.rds
 vignettes/*.html
 vignettes/*.md
 vignettes/*.R
-/doc/
-/Meta/

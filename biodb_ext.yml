@@ -14,6 +14,6 @@ remote: yes
 downloadable: no
 makefile: yes
 rcpp: no
-vignetteName: intro
+vignetteName: biodbLipidmaps
 githubRepos: pkrog/biodbLipidmaps
 travis: no
