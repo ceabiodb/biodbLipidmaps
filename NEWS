@@ -1,3 +1,7 @@
+Changes in version 1.1.1 (2022-03-17)
++ Update maintenance files.
++ Add log output to ouput file during check.
+
 Changes in version 0.99.3 (2021-10-18)
 + Remove deprecated slow frequency of request send.
 
