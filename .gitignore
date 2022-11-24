@@ -19,7 +19,9 @@ Meta
 Renviron.bioc
 src-i386
 src-x64
+src/*.o
 src/*.rds
+src/*.so
 tests/*/output
 tests/testthat/output
 testthat-problems.rds
