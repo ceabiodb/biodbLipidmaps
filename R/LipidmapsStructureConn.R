@@ -61,18 +61,23 @@ wsLmsdSearch=function(mode=NULL, output.mode=NULL, output.type=NULL,
 
     # Check parameters
     retfmt <- match.arg(retfmt)
-    chk::chk_null_or(mode, chk::chk_subset, c('ProcessStrSearch',
-        'ProcessTextSearch', 'ProcessTextOntologySearch'))
+    chk::chkor_vld(chk::vld_null(mode), chk::vld_subset(mode,
+        c('ProcessStrSearch', 'ProcessTextSearch',
+        'ProcessTextOntologySearch')))
     if (retfmt == 'ids') {
         output.mode <- 'File'
         output.type <- 'TSV'
     }
-    chk::chk_null_or(output.mode, chk::chk_subset, c('File'))
-    chk::chk_null_or(output.type, chk::chk_subset, c('TSV', 'CSV', 'SDF'))
-    chk::chk_null_or(output.delimiter, chk::chk_subset, c('Tab', 'Comma',
-        'Semicolon'))
-    chk::chk_null_or(output.quote, chk::chk_subset, c('Yes', 'No'))
-    chk::chk_null_or(output.column.header, chk::chk_subset, c('Yes', 'No'))
+    chk::chkor_vld(chk::vld_null(output.mode),
+        chk::vld_subset(output.mode, c('File')))
+    chk::chkor_vld(chk::vld_null(output.type),
+        chk::vld_subset(output.type, c('TSV', 'CSV', 'SDF')))
+    chk::chkor_vld(chk::vld_null(output.delimiter),
+        chk::vld_subset(output.delimiter, c('Tab', 'Comma', 'Semicolon')))
+    chk::chkor_vld(chk::vld_null(output.quote),
+        chk::vld_subset(output.quote, c('Yes', 'No')))
+    chk::chkor_vld(chk::vld_null(output.column.header),
+        chk::vld_subset(output.column.header, c('Yes', 'No')))
 
     # Build request
     fct.args <- as.list(environment())
@@ -157,13 +162,16 @@ wsLmsdRecord=function(lmid, mode=NULL, output.type=NULL, output.delimiter=NULL,
 
     retfmt <- match.arg(retfmt)
     chk::chk_string(lmid)
-    chk::chk_null_or(output.mode, chk::chk_subset, c('File', 'Download'))
-    chk::chk_null_or(output.type, chk::chk_subset, c('TSV', 'CSV', 'SDF',
-        'MDLMOL'))
-    chk::chk_null_or(output.delimiter, chk::chk_subset, c('Tab', 'Comma',
-        'Semicolon'))
-    chk::chk_null_or(output.quote, chk::chk_subset, c('Yes', 'No'))
-    chk::chk_null_or(output.column.header, chk::chk_subset, c('Yes', 'No'))
+    chk::chkor_vld(chk::vld_null(output.mode),
+        chk::vld_subset(output.mode, c('File', 'Download')))
+    chk::chkor_vld(chk::vld_null(output.type),
+        chk::vld_subset(output.type, c('TSV', 'CSV', 'SDF', 'MDLMOL')))
+    chk::chkor_vld(chk::vld_null(output.delimiter),
+        chk::vld_subset(output.delimiter, c('Tab', 'Comma', 'Semicolon')))
+    chk::chkor_vld(chk::vld_null(output.quote),
+        chk::vld_subset(output.quote, c('Yes', 'No')))
+    chk::chkor_vld(chk::vld_null(output.column.header),
+        chk::vld_subset(output.column.header, c('Yes', 'No')))
 
     # Build request
     url <- paste0(self$getPropValSlot('urls', 'base.url'), 'LMSDRecord.php')
