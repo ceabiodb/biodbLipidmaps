@@ -309,6 +309,9 @@ doSearchForEntries=function(fields=NULL, max.results=0) {
     output.delimiter, output.column.header, output.quote) {
 
     # Mode must be set or HTML will be output
+    # See https://www.lipidmaps.org/data/structure/programmaticaccess.html
+    
+    # Parse TSV/CSV table
     if (is.null(output.type) || output.type %in% c('TSV', 'CSV')) {
         if (is.null(output.type) || output.type == 'TSV')
             sep <- "\t"
@@ -319,6 +322,23 @@ doSearchForEntries=function(fields=NULL, max.results=0) {
             || output.column.header == 'Yes')
         quote <- if (is.null(output.quote)
             || output.quote == 'No') '' else '"'
+        
+        # 2022-12-01 A bug in the web service generates a HTML header before
+        # the table:
+        #   <script src='/js/jquery/jquery.min.js'></script>
+        #   ...
+        #   <style>
+        #   ...
+        #   .datatable th {
+        #   ...
+        #   }
+        #   ...
+        #   </style>
+        #
+        #   LM_ID ...
+        # We try to remove it first:
+        results <- sub("^.*</style>\\s*", "", results)
+
         results <- read.table(text=results, sep=sep, header=header,
             comment.char='', stringsAsFactors=FALSE, quote=quote, fill=TRUE)
     }
